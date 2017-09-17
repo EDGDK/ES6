@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    </head>
+    <body>
+        <h1>欢迎加入es6</h1>
+        <script>
+            //let声明的变量仅在当前有效，当前的i只在本轮循环有效，所以输出是6
+            var array = [];
+                for (let index = 0; index < 10; index++) {
+                    array[index] = function () {
+                        console.log(index);
+                    }
+
+                }
+                array[6]();
+            
+            //let不允许相同作用域上声明同一变量
+            function a(){
+                let a = 1;
+                //let a = 2;//报错
+                //var a = 3;//报错
+            }
+
+            //暂时性死区
+            function bar(x =y , y =2 ){
+                return [x,y];
+            }
+            bar();//y is not defined
+        </script>
+    </body>
+</html>

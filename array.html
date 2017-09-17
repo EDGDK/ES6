@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    </head>
+    <body>
+        <h1>数组的扩展</h1>
+        <script>
+            let arrayLike = {
+                '0':'a',
+                '1':'b',
+                '2':'c',
+                length:3
+            }
+            //ES5写法
+            var arr1 = [].slice.call(arrayLike);
+            //ES6写法
+            let arr2 = Array.from(arrayLike);
+            console.log(arr1,arr2);
+
+            //返回数据类型
+            function typesof(){
+                return Array.from(arguments,value => typeof value);
+            }
+            console.log(typesof(null,[],NaN));
+
+            //Array.of()将一组数值转换为数组
+            Array.of(1,2,3);//[1,2,3]
+            console.log(Array(1));//只有当参数不少于2个的时候才能返回数组
+
+            //数组实例的copyWidthin()
+            
+        </script>
+    </body>
+</html>

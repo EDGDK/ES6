@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <script>
+            let s = Symbol();
+            console.log(typeof(s));
+            //Symbol可以转换成字符串和布尔值，不能转换成数值
+            var sym = Symbol('test');
+            console.log(sym.toString());
+            console.log(Boolean(sym));
+
+            //作为属性名Symbol
+            var  mysymbol = Symbol();
+            var a = {};
+            a[mysymbol]='hello';
+             console.log(a[mysymbol]);
+
+            //Symbol.isConcatSpreadable
+            let arr1 = ['c','d'];
+            ['a','b'].concat(arr1,'e');//['a','b','c','d','e']
+            let arr2 = ['c','d'];
+            arr2[Symbol.isConcatSpreadable] = false;
+            ['a','b'].concat(arr1,'e');//['a','b',['c','d'],'e']
+            //数组的isConcatSpreadable默认是true，但是类似对象的数组是false，必须手动打开
+
+        </script>
+    </body>
+</html>

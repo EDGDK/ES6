@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.title='set和map';
+        var s = new Set();
+        [2,3,5,4,1,2,3,4].map(x =>s.add(x))//Set结构不会添加重复的值 
+        for(i of s){console.log(i)}
+        //Set实例的4个操作方法和4个遍历方法
+        //s.add(value);
+        //s.delete(value);
+        //s.has(value);
+        //s.clear();
+        let set = new Set(['red','blue','black']);
+        for(let item of set.values()){
+            console.log(item);
+        }
+
+        //WeakSet和Set结构类似，但是有2点不同，1，WeakSet的成员只能是对象，不能是其他类型的值。2，WeakSet是不可遍历的。
+
+        //Map
+        let map = new Map([['name','张三'],['title','测试']]);
+        console.log(map.get('title'));
+
+        //操作方法和遍历方法和Set一致
+        let map0 = new Map()
+        .set(1,'a')
+        .set(2,'b')
+        .set(3,'c');
+        let map1 = new Map(
+            [...map0].filter(([k,v]) => k<3)
+        );
+        console.log(map1);
+        let map2 = new Map(
+            [...map0].map(([k,v]) => [k*2,'_'+v])
+        );
+        console.log(map2);
+        //Map转为数组
+        //最简单就是使用扩展运算符
+        let myMap =new Map().set(true,3).set({foo:7},'abc');
+        console.log([...myMap]);
+        //数组转为Map
+        console.log(new Map([[true,3],[{foo:7},'abc']]));
+        //Map转为JSON
+        function strMapToJson(strMap){
+            return JSON.stringify(strMapToObj(strMap));
+        }
+        function strMapToObj(strMap){
+            var obj = Object.create(null);
+            for(let [k,v] of strMap){
+                obj[k] = v;
+            }
+            return obj;
+        }
+        let myMap1 = new Map().set('yes',true).set('no',false);
+        console.log(strMapToJson(myMap1));
+    </script>
+</body>
+</html>

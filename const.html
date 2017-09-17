@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    </head>
+    <body>
+        <h1>作用域和const</h1>
+        <script>
+           // let 实际上为js新增了块级作用域
+           function f1(){
+               let n =5 ;
+               if(true){
+                   let n = 10;
+               }
+               console.log(n);//5
+           }
+           f1();
+
+           //内层作用域可以定义外层作用域的同名变量，外层作用域无法读取内层作用域的同名变量
+           {{{{
+               let a ="hello world!";
+               {console.log(a);}
+           }}}}
+
+           //函数本身的作用域，在其所在的块级作用域之内
+           function f(){console.log('I am outside!');}
+           (function(){
+                if(false){
+                    function f(){console.log('I am inside!');}
+                }
+               
+           }());
+           f();
+           //在es5中是I am inside! 在es6中是I am outside!
+
+           //const也是声明变量，一旦声明就不能改变
+           const a = [];
+           a.push("hello");
+           a.length = 0;
+           //a =["world"];//报错，若将另一个数组赋值给a数组，报错
+
+           //若想冻结对象，用Object.freeze方法
+           const foo =Object.freeze({});
+           foo.prop = 123;
+           console.log(foo);
+
+           //跨模块变量
+           //constants.js模块
+        //    export const A =1;
+        //    export const B =3;
+        //    export const C =4;
+           
+          //test1.js 模块
+        //    import * as constants from './constants';
+        //    console.log(constants.A);//1
+        //    console.log(constants.B);//3
+
+            //test2.js模块
+        //    import {A,B} from './constants';
+        //    console.log(A);//1
+        //    console.log(B);//3
+
+           //全局对象
+           let  c =3;
+           alert(window.c);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.title='Iterator和Generator函数';
+        //iterator
+        var someString = 'hi';
+        var iterator = someString[Symbol.iterator]();
+        console.log(iterator.next());
+        console.log(iterator.next());
+        console.log(iterator.next());
+
+        //Generator
+        function* helloWorldGenerator(){
+            yield 'hello';
+            yield 'world';
+            return 'ending';
+        }
+        var hw = helloWorldGenerator();
+        console.log(hw.next());
+        console.log(hw.next());
+        console.log(hw.next());
+        console.log(hw.next());
+        //由于Generator函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield语句就是暂停标志。
+
+        function* numbers(){
+            yield 1;
+            yield 2;
+            return 3;
+            yield 4;
+        }
+        console.log(...numbers());
+
+        function* g(){
+            try{
+                var a = yield foo('a');
+                var b = yield foo('b');
+                var c = yield foo('c');
+            }catch(e){
+                console.log(e);
+            }
+            console.log(a,b,c);
+        }
+        //ES6新加入了for...of方便遍历获取键值
+        var arr = ['a','b','c','d'];
+        for(let a in arr){
+            console.log(a);
+        }
+        for(let a of arr){
+            console.log(a);
+        }
+        //Set结构和Map结构首先，遍历的顺序是按照各个成员被添加进数据结构的顺序。其次，Set结构遍历时，返回的是一个值，而Map结构遍历时，返回的是一个数组，该数组的两个成员分别为当前Map成员的键名和键值
+        let map = new Map().set('a',1).set('b',2);
+        for(let p of map){
+            console.log(p);
+        }
+        for(let [keys,values] of map){
+            console.log(keys+':'+values);
+        }
+
+        //entries()返回一个遍历器对象，用来遍历ƃ键名ř 键值Ƅ 组成的数组。对于数组，键名就是索引值；对于Set，键名与键值相同。Map结构的iterator接口，默认就是调用entries方法。
+        let arr1 = ['a','b','c'];
+        for(let p of arr1.entries()){
+            console.log(p);
+        }
+        //for...of 循环还有一个特点，就是会正确识别32位UTF­16字符。
+        //并不是所有的类似数组都有iterator接口，用Array.from方法将其转化成数组
+        let arrayLike = {length:2,0:'a',1:'b'};
+        //for(let x of arrayLike){
+        //    console.log(x);
+        //}
+        for(let x of Array.from(arrayLike)){
+            console.log(x)
+        }
+
+        //yield用法，且不能放在普通的函数里面;ield 语句其实就是生成了一个 iterator ，完全和直接写 iterator 没区别
+        var arr2 = [1,[[2,3],4],[5,6]];
+        var flat = function*(a){
+            var length =a.length;
+            for(var i=0;i<length;i++){
+                var item =a[i];
+                if(typeof(item)!=='number'){
+                    yield* flat(item);
+                }else{
+                    yield item;
+                }
+            }
+        };
+        for(var f of arr2){
+            console.log(f);
+        }
+        //yield next方法的参数
+        function* fa(){
+            for(var i=0;true;i++){
+                var reset = yield i;
+                if(yield){i=-1;}
+            }
+        }
+        var g = fa();
+        console.log(g.next());
+        console.log(g.next());
+        console.log(g.next(true));
+
+        //下面是一个利用 Generator 函数和for...of循环，实现斐波那契数列的例子。
+        function* fibonacci() {
+            let [prev, curr] = [0, 1];
+            for (;;) {
+                [prev, curr] = [curr, prev + curr];
+                yield curr;
+            }
+        }
+
+        for (let n of fibonacci()) {
+            if (n > 1000) break;
+            console.log(n);
+        }
+        //try catch用于捕捉错误
+        var gen = function* gen(){
+            yield console.log('hello');
+            yield console.log('world');
+        }
+
+        var g = gen();
+        g.next();
+
+        try {
+            throw new Error();
+        } catch (e) {
+            g.next();
+        }
+        function* numbers () {
+            yield 1;
+            try {
+                yield 2;
+                yield 3;
+            } finally {
+                yield 4;
+                yield 5;
+            }
+            yield 6;
+        }
+        var ga = numbers();
+        ga.next() // { value: 1, done: false }
+        ga.next() // { value: 2, done: false }
+        ga.return(7) // { value: 4, done: false }
+        ga.next() // { value: 5, done: false }
+        ga.next() // { value: 7, done: true }
+
+        function* inner(){
+            yield 'hello';
+        }
+        function* outer1(){
+            yield 'open';
+            yield inner();
+            yield 'close';
+        }
+        var gen = outer1();
+        console.log(gen.next().value);
+        console.log(gen.next().value);
+        console.log(gen.next().value);
+        function* outer2(){
+            yield 'open';
+            yield* inner();
+            yield 'close';
+        }
+        var gen = outer2();
+        console.log(gen.next().value);
+        console.log(gen.next().value);
+        console.log(gen.next().value);
+        //yield命令后面如果不加星号，返回的是整个数组，加了星号就表示返回的是数组的遍历器对象
+
+        //部署iterator接口
+        function* iterEntries(obj) {
+            let keys = Object.keys(obj);
+            for (let i=0; i < keys.length; i++) {
+                let key = keys[i];
+                yield [key, obj[key]];
+            }
+        }
+
+        let myObj = { foo: 3, bar: 7 };
+
+        for (let [key, value] of iterEntries(myObj)) {
+            console.log(key, value);
+        }
+    </script>
+</body>
+</html>

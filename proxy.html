@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.title='proxy和Reflect';
+        //proxy属于拦截操作
+        //1.get(target,propKey,receiver)拦截对象数据的读取,receiver是可选
+        var person = {
+            name:"张三"
+        };
+        var proxy = new Proxy(person,{
+            get:function(target,property){
+                if(property in target){
+                    return target[property];
+                }else{
+                    throw new ReferenceError("Property \"" +property + "\" does not exist ");
+                }
+            }
+        });
+        console.log(proxy.name);
+       // console.log(proxy.age);
+
+        //2.set(target,propKey,value,receiver)拦截对象数据的设置，返回一个布尔值
+        let validator ={
+            set:function(obj,prop,value){
+                if(prop === 'age'){
+                    if(!Number.isInteger(value)){
+                        throw new TypeError('The age is not an integer');
+                    }if(value > 200){
+                        throw new RangeError('The age seems invalid');
+                    }
+                }
+                obj[prop] = value;
+            }
+        };
+        let persons = new Proxy({},validator);
+        persons.age = 200;
+        console.log(persons.age);    
+                           
+        //3.has(target,propKey)拦截propKey in proxy的操作，返回一个布尔值
+
+        //Reflect对象也是为了操作对象而提供的新的API
+        // 修改某些Object方法的返回结果，让其变得更合理。
+    </script>
+</body>
+</html>

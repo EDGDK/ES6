@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       
+    </head>
+    <body>
+        <h1>数值的扩展</h1>
+        
+        <script>
+            //Number.isFinite(),Number.isNaN(),这两种方法只对数字有效
+            //console.log();
+            console.log(Number.isFinite(15));
+            console.log(Number.isFinite(Infinity));
+            console.log(Number.isNaN(NaN));
+            console.log(Number.isNaN(NaN));
+
+            //Number.parseInt(),Number.parseFloat与全局的方法一样，这样做减少全局性方法，使语言更模块化
+            console.log(Number.parseInt(2.22));
+            console.log(Number.parseFloat(5.1));
+
+            //新增了一些Math的方法
+            Math.trunc(4.1);//4,去除一个数的小数部分
+            Math.sign(1);//+1,判断值是否是正数，返回5种，+1，-1，0，-0，NaN
+            Math.cbrt(3);//9,计算立方根
+            Math.clz32(1)//31，返回一个数的32位无符号整数形式有多少个前导0
+            Math.imul()
+        </script>
+    </body>
+</html>

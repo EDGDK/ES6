@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    </head>
+    <body>
+        <h1>变量的解构赋值</h1>
+        <script>
+            //对数组的解构
+            let [a,[[b],c]] = [1,[[2],3]];
+            console.log(a);//1
+            console.log(b);//2
+            console.log(c);//3
+            //若解构不成功则值是undefined。
+            let [x,y] = [1,2,3];
+            console.log(x);//1
+            console.log(y);//2
+            /*
+            var [v1,v2,vn] = array;
+            let [v1,v2,vn] = array;
+            const [v1,v2,vn] = array;
+            */
+
+            //解构赋值允许指定默认值
+            let [x1 =1,y1=x1]=[];
+            let [x2 =1,y2=x2]=[2];
+            let [x3 =1,y3=x3]=[1,2];
+            //let [x4 =y4,y4=1]=[];//ReferenceError
+            console.log(x1,y1,x2,y2,x3,y3);
+
+            //对象的解构
+            var {bar,foo} = {foo:"aaa",bar:"bbb"};
+            var {baz} = {foo:"aaa",bar:"bbb"};
+            console.log(bar,foo);
+            console.log(baz);
+            var {bar1:foo1} = {foo1:"aaa",bar1:"bbb"};
+            console.log(foo1);
+            //console.log(bar1);undefined
+            //真正被赋值的是foo1，而不是bar1
+
+            //嵌套赋值
+            let obj = {};
+            let arr = [];
+            ({foo2:obj.prop,bar2:arr[0]} = {foo2:123,bar2:true});
+            console.log(obj,arr);
+
+            //函数参数，字符串，数值和布尔值的解构赋值类似。
+            /*
+            *解析过程中不要轻易使用（）;
+            *1.变量声明语句中，模式不能带圆括号。
+            *2.函数参数中，模式不能带圆括号。
+            *3.不能将整个模式，或嵌套模式中的一层，放在圆括号中。
+            */
+            //解构数值最有用的方法，提取json数据
+            var jsonData = {
+                id:12,
+                status:'ok',
+                data:[867,1245]
+            }
+            let{id,status,data:number} =jsonData;
+            console.log(id,status,number);
+            //遍历Map结构
+            var map = new Map();
+            map.set('first','hello');
+            map.set('second','world');
+            for(let [key,value] of map){
+                console.log(key + 'is' + value);
+            }
+        </script>
+    </body>
+</html>

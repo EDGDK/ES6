@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       
+    </head>
+    <body>
+        <h1>正则表达式的扩展</h1>
+        <script>
+            //u修饰符,用来处理大于\uFFFF的Unicode字符，可以正确处理4个字节的UTF-16编码
+            var str = /^\uD83D/u.test('\uD83D\uDC2A');
+            var str1 = /^\uD83D/.test('\uD83D\uDC2A');
+            console.log(str,str1);
+
+            //1.点字符
+            var s = '𠮷';
+            console.log(/^.$/.test(s));
+            console.log(/^.$/u.test(s));
+
+            //2.Unicode字符表示法
+            console.log(/\u{61}/.test('a'));
+            console.log(/\u{61}/u.test('a'));
+
+            //3.量词
+            console.log(/𠮷{2}/.test('𠮷𠮷'));
+            console.log(/𠮷{2}/u.test('𠮷𠮷'));
+
+            //y修饰符确保匹配时候不会漏掉，但是一旦出现非法字符，他会忽略掉。需用g全局。
+
+            //RegExp.escape()
+            var escape = require('regexp.escape');
+            console.log(escape('hi,I am DK'));
+
+        </script>
+    </body>
+</html>

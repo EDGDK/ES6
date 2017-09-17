@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Generator 函数的异步应用</title>
+</head>
+<body>
+    <script>
+        //回调函数就是js函数异步的表现
+        //因为多个异步操作形成了强耦合，只要有一个操作需要修改，它的上层回调函数和下层回调函数，可能都要跟着修改。这种情况就称为"回调函数地狱"（callback hell）。
+        //协程 Generator函数
+        function *gen(x){
+            var y = yield x + 2;
+            return y;
+        }
+        var g =gen(1);
+        console.log(g.next());
+        console.log(g.next());
+        //js中的thunk函数的应用
+        //es5
+        // var Thunk = function(fn){
+        //     return function(){
+        //         var args = Array.prototype.slice.call(arguments);
+        //         return function(callback){
+        //             args.push(callback);
+        //             return fn.apply(this,args);
+        //         }
+        //     }
+        // }
+        //es6
+        const Thunk = function(fn){
+            return function(...args){
+                return function(callback){
+                    return fn.call(this,...args,callback);
+                }
+            }
+        }
+
+        function f(a, cb) {
+            cb(a);
+        }
+        const ft = Thunk(f);
+
+        ft(1)(console.log) ;
+
+        //async
+        function timeout(ms){
+            return new Promise((resolve) =>{
+                setTimeout(resolve,ms);
+            });
+        }
+        async function asyncPrint(value,ms) {
+            await timeout(ms);
+            console.log(value);
+        }
+        asyncPrint('hello world',1000);
+
+        async function f(){
+            return 'hello world';
+        }
+        f().then(v => console.log(v));
+
+        async function getTitle(url) {
+            let response = await fetch(url);
+            let html = await response.text();
+            return html.match(/<title>([\s\S]+)<\/title>/i)[1];
+        }
+        getTitle('https://tc39.github.io/ecma262/').then(console.log);
+        //当第一个异步操作失败时，不会执行第二个。如果需要，要把async放在try...catch中
+
+        async function f1(){
+            try {
+                await Promise.reject('报错了！');
+            } catch (e) {
+                
+            }
+            return await Promise.resolve('hello world');
+        }
+        f1()
+        .then(v => console.log(v));
+        //使用try...catch结构实现多次重复尝试
+        //require是在node端
+        const superagent = require('superagent');
+        const num = 3;
+        async function test(){
+            let i;
+            for(i=0;i<num;++i){
+                try {
+                    await superagent.get('http://google.com/this-throws-an-error');
+                    break;
+                } catch (err) {
+                    
+                }
+            }
+            console.log(i);
+        }
+        test();
+        async function* gen1(){
+            yield 'a';
+            yield 'b';
+            return 2;
+        }
+        async function* gen2(){
+            const result = yield* gen1();
+        }
+        (async function () {
+            for await (const x of gen2()) {
+              console.log(x);
+            }
+        })();
+    </script>
+</body>
+</html>
