@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>module语法</title>
+</head>
+<body>
+    <script type="module">
+        //浏览器目前不支持import请用balbel转化成es5
+        //export和import两部分构成
+        //a.js
+        var sex = 'boy';
+        var echo = value =>console.log(value);
+        export {sex,echo}
+        //通过向大括号中添加sex，echo变量并且export输出，就可以将对应变量值以sex、echo变量标识符形式暴露给其他文件而被读取到
+        //b.js
+        import {sex,echo} from 'a.js的地址'
+        console.log(sex);//boy
+        // echo(sex)//boy
+        //commonJS
+        let { stat, exists, readFile } = require('fs');
+        //ES6
+        import { stat, exists, readFile } from 'fs';
+        //es6严格模式使用方法，自动采用自动严格模式，无论加不加"use strict";
+        export var foo = 'foz';
+        setTimeout(() => foo = 'foz',500);
+        //export and import 可以把导入和导出的对象包含在一个对象中，如
+        var firstname = 'EDG';
+        var secondname = 'clearlove7';
+        var year = '2017';
+        // export {firstname,secondname,year};
+        import * as circle from 'circle';
+        console.log('圆面积:'+area(4));
+        console.log('圆周长:'+circumference(4));
+    </script>
+</body>
+</html>

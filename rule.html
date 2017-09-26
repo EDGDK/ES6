@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>编码规则</title>
+</head>
+<body>
+    <script>
+        //1.(1)块级作用域let代替var
+        //(2)全局变量和线程安全
+        //优先使用const
+        const [a,b,c] = [1,2,3];
+        // 长远来看，JavaScript可能会有多线程的实现（比如Intel的River Trail那一类的项目），这时let表示的变量，只应出现在单线程运行的代码中，不能是多线程共享的，这样有利于保证线程安全。
+        //2.字符串 
+        //静态字符串一律使用单引号，冬天字符串使用反引号``
+        const a = 'qaq';
+        const b =`qaq${a}233`;
+        //3.对数组成员变量赋值优先使用解构赋值
+        const arr = [1,2,3,4];
+        const [first,second] = arr;
+        function getTime({first,second}){};
+        //4.对象
+        const c = {first:12,second:23};
+        const d = {
+            first:12,
+            second:23,
+        }
+        //对象的属性和方法尽量简洁
+        const common ={
+            ref,
+            value:1,
+            addValue(value){
+                return common.value+value;
+            },
+        }
+        //5.数组
+        //使用扩展符拷贝数组
+        const arr1 = [...arr];
+        //类似数组对象转化成数组用Array.from
+        const foo = document.querySelectorAll('.foo');
+        const nodes = Array.from(foo);
+        //6.箭头函数
+        //立即执行函数可以直接写成箭头函数
+        (() => {
+            console.log('welcome to es6!');
+        })();
+        [1,2,3].map(x=> x*x);
+        //7.map结构
+        let map = new Map(arr);
+
+        for (let key of map.keys()) {
+            console.log(key);
+        }
+
+        for (let value of map.values()) {
+            console.log(value);
+        }
+
+        for (let item of map.entries()) {
+            console.log(item[0], item[1]);
+        }
+        //8.class
+        //总是用class代替prototype操作
+        
+    </script>
+</body>
+</html>
